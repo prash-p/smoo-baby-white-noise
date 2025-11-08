@@ -111,29 +111,35 @@ git clone https://github.com/prash-p/smoo-baby-white-noise.git
 cd smoo-baby-white-noise
 ```
 
-2. **Verify audio files exist:**
+2. **Install dependencies**
+```bash
+pip install -r requirements-windows.txt
+```
+Change requirements filename depending on which OS you are on
+
+3. **Verify audio files exist:**
 ```bash
 ls sounds/
 # Should see: snoo - level 0.wav, snoo - level 1.wav, etc.
 ```
 
-3. **Verify YAMNet model exists:**
+4. **Verify YAMNet model exists:**
 ```bash
 ls yamnet*
 # Should see: yamnet.tflite, yamnet_class_map.csv
 ```
 
-4. **Test audio devices:**
+5. **Test audio devices:**
 ```bash
 python3 -c "import pyaudio; p = pyaudio.PyAudio(); print('Input devices:', p.get_device_count())"
 ```
 
-5. **Start the web server:**
+6. **Start the web server:**
 ```bash
 python3 app.py
 ```
 
-6. **Open web interface:**
+7. **Open web interface:**
 ```
 http://localhost:5000
 ```
