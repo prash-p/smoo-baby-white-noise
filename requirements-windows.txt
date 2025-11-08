@@ -1,0 +1,18 @@
+# Smart Baby Monitor - Windows Requirements
+
+# Core audio processing
+pyaudio
+numpy>=1.21.0
+scipy>=1.7.0
+resampy>=0.4.2
+
+# Web interface
+flask>=2.0.0
+flask-cors>=3.0.0
+
+# Machine learning
+tensorflow>=2.13.0,<=2.20.0
+
+# Windows audio control
+pycaw>=20230407
+comtypes>=1.2.0

@@ -1,0 +1,18 @@
+# Smart Baby Monitor - Raspberry Pi Requirements
+# Optimized for Raspberry Pi (uses lightweight TFLite runtime)
+
+# Core audio processing
+pyaudio
+numpy>=1.21.0,<1.25.0
+scipy>=1.7.0,<1.11.0
+resampy>=0.4.2
+
+# Web interface
+flask>=2.0.0,<3.0.0
+flask-cors>=3.0.0,<5.0.0
+
+# Machine learning (lightweight for Pi)
+tflite-runtime>=2.5.0
+
+# Linux audio control
+pyalsaaudio>=0.9.0

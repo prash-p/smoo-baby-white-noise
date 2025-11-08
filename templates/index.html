@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Baby Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .status-indicator {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .status-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .status-detail {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-start {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-start:hover:not(:disabled) {
+            background: #059669;
+        }
+
+        .btn-stop {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-stop:hover:not(:disabled) {
+            background: #dc2626;
+        }
+
+        .level-control {
+            margin-bottom: 30px;
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-header h3 {
+            color: #333;
+            font-size: 1.3em;
+        }
+
+        .level-value {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .level-buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .level-btn {
+            padding: 15px;
+            background: #f3f4f6;
+            color: #333;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .level-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .level-btn:hover:not(:disabled) {
+            background: #764ba2;
+            color: white;
+        }
+
+        .settings {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .settings h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .setting-row label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .setting-row input {
+            padding: 8px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 1em;
+            width: 100px;
+            text-align: center;
+        }
+
+        .setting-row input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .update-btn {
+            background: #667eea;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .update-btn:hover {
+            background: #764ba2;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👶 SMOO</h1>
+        <p class="subtitle">Smart White Noise Machine</p>
+
+        <div class="status-card">
+            <div class="status-indicator" id="statusIcon">⏸️</div>
+            <div class="status-text" id="statusText">System Stopped</div>
+            <div class="status-detail" id="statusDetail">Ready to start</div>
+        </div>
+
+        <div class="control-buttons">
+            <button class="btn-start" id="startBtn">▶️ Start</button>
+            <button class="btn-stop" id="stopBtn" disabled>⏹️ Stop</button>
+        </div>
+
+        <div class="level-control">
+            <div class="level-header">
+                <h3>Sound Level</h3>
+                <span class="level-value" id="currentLevel">0</span>
+            </div>
+            <div class="level-buttons" id="levelButtons">
+                <button class="level-btn active" data-level="0">0</button>
+                <button class="level-btn" data-level="1">1</button>
+                <button class="level-btn" data-level="2">2</button>
+                <button class="level-btn" data-level="3">3</button>
+                <button class="level-btn" data-level="4">4</button>
+            </div>
+        </div>
+
+        <div class="settings">
+            <h3>⚙️ Settings</h3>
+            <div class="setting-row">
+                <label>Level Down Time (s):</label>
+                <input type="number" id="levelDownTime" min="1" max="300">
+            </div>
+            <div class="setting-row">
+                <label>Level Up Time (s):</label>
+                <input type="number" id="levelUpTime" min="1" max="60">
+            </div>
+            <button class="update-btn" id="updateConfigBtn">Update Settings</button>
+        </div>
+
+        <div class="message hidden" id="message"></div>
+    </div>
+
+    <script>
+        let isRunning = false;
+        let statusInterval = null;
+
+        // API calls
+        async function fetchStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                updateUI(data);
+            } catch (error) {
+                console.error('Error fetching status:', error);
+            }
+        }
+
+        async function startSystem() {
+            try {
+                const response = await fetch('/api/start', { method: 'POST' });
+                const data = await response.json();
+                showMessage(data.message, data.success);
+                if (data.success) {
+                    isRunning = true;
+                    statusInterval = setInterval(fetchStatus, 1000);
+                }
+                fetchStatus();
+            } catch (error) {
+                showMessage('Error starting system', false);
+            }
+        }
+
+        async function stopSystem() {
+            try {
+                const response = await fetch('/api/stop', { method: 'POST' });
+                const data = await response.json();
+                showMessage(data.message, data.success);
+                if (data.success) {
+                    isRunning = false;
+                    clearInterval(statusInterval);
+                }
+                fetchStatus();
+            } catch (error) {
+                showMessage('Error stopping system', false);
+            }
+        }
+
+        async function setLevel(level) {
+            try {
+                const response = await fetch('/api/level', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ level })
+                });
+                const data = await response.json();
+                showMessage(data.message, data.success);
+                fetchStatus();
+            } catch (error) {
+                showMessage('Error setting level', false);
+            }
+        }
+
+        async function updateConfig() {
+            try {
+                const config = {
+                    level_down_time: parseInt(document.getElementById('levelDownTime').value),
+                    level_up_time: parseInt(document.getElementById('levelUpTime').value)
+                };
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                const data = await response.json();
+                showMessage(data.message, data.success);
+            } catch (error) {
+                showMessage('Error updating config', false);
+            }
+        }
+
+        // UI updates
+        function updateUI(data) {
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const statusDetail = document.getElementById('statusDetail');
+            const currentLevel = document.getElementById('currentLevel');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const levelButtons = document.querySelectorAll('.level-btn');
+
+            if (data.running) {
+                statusIcon.textContent = '🎵';
+                statusText.textContent = 'System Running';
+                statusDetail.textContent = `Volume: ${data.volume_percent}% • Level: ${data.current_level}`;
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                levelButtons.forEach(btn => btn.disabled = false);
+            } else {
+                statusIcon.textContent = '⏸️';
+                statusText.textContent = 'System Stopped';
+                statusDetail.textContent = 'Ready to start';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                levelButtons.forEach(btn => btn.disabled = true);
+            }
+
+            currentLevel.textContent = data.current_level;
+            levelButtons.forEach(btn => {
+                if (parseInt(btn.dataset.level) === data.current_level) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update settings fields
+            document.getElementById('levelDownTime').value = data.level_down_time;
+            document.getElementById('levelUpTime').value = data.level_up_time;
+        }
+
+        function showMessage(text, success) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${success ? 'success' : 'error'}`;
+            setTimeout(() => message.classList.add('hidden'), 3000);
+        }
+
+        // Event listeners
+        document.getElementById('startBtn').addEventListener('click', startSystem);
+        document.getElementById('stopBtn').addEventListener('click', stopSystem);
+        document.getElementById('updateConfigBtn').addEventListener('click', updateConfig);
+
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const level = parseInt(btn.dataset.level);
+                setLevel(level);
+            });
+        });
+
+        // Initial status fetch
+        fetchStatus();
+    </script>
+</body>
+</html>

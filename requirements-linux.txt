@@ -1,0 +1,18 @@
+# Smart Baby Monitor - Linux Requirements
+# For desktop/laptop Linux systems (not Raspberry Pi)
+
+# Core audio processing
+pyaudio
+numpy>=1.21.0
+scipy>=1.7.0
+resampy>=0.4.2
+
+# Web interface
+flask>=2.0.0
+flask-cors>=3.0.0
+
+# Machine learning (full TensorFlow for better performance on desktop)
+tensorflow>=2.13.0,<=2.20.0
+
+# Linux audio control
+pyalsaaudio>=0.9.0
