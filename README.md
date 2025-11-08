@@ -163,11 +163,11 @@ Edit the `CONFIG` dictionary in your audio module to customize behavior:
 ### Volume Settings
 ```python
 "volume_levels": {
-    0: 95,  # Level 0: 50% system volume
-    1: 97,  # Level 1: 60% system volume
-    2: 98,  # Level 2: 70% system volume
-    3: 99,  # Level 3: 80% system volume
-    4: 100   # Level 4: 90% system volume
+    0: 95,  # Level 0: 95% system volume
+    1: 97,  # Level 1: 97% system volume
+    2: 98,  # Level 2: 98% system volume
+    3: 99,  # Level 3: 99% system volume
+    4: 100   # Level 4: 100% system volume
 }
 ```
 
